@@ -76,6 +76,7 @@ Relevant Links
     - Pure Noise refers to starting from a fully random noise tensor instead of your image. **This is the default behavior in the StableSR paper.**
     - When enabling it, the script ignores your denoising strength and gives you much more detailed images, but also changes the color & sharpness significantly
     - When disabling it, the script starts by adding some noise to your image. The result will be not fully detailed, even if you set denoising strength = 1 (but maybe aesthetically good). See [Comparison](https://imgsli.com/MTgwMTMx).
+    - If you disable Pure Noise, we recommend denoising strength=1
 
 ### 6. Important Notice
 
@@ -102,6 +103,7 @@ This project is licensed under:
 - [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa], due to the use of the NVIDIA SPADE module.
 
 [![CC BY-NC-SA 4.0][cc-by-nc-sa-image]][cc-by-nc-sa]
+
 [cc-by-nc-sa]: http://creativecommons.org/licenses/by-nc-sa/4.0/
 [cc-by-nc-sa-image]: https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png
 [cc-by-nc-sa-shield]: https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg
