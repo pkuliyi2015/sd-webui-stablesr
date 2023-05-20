@@ -38,21 +38,20 @@ Relevant Links
 - You MUST use the Stable Diffusion V2.1 512 **EMA** checkpoint (~5.21GB) from StabilityAI
     - You can download it from [HuggingFace](https://huggingface.co/stabilityai/stable-diffusion-2-1-base)
     - Put into stable-diffusion-webui/models/Stable-Diffusion/
-- Download the pruned StableSR module (~
-400MB)
-    - Official resources: In Progress
+- Download the extracted StableSR module
+    - Official resources: [HuggingFace](https://huggingface.co/Iceclear/StableSR/resolve/main/weibu_models.zip) (~1.2 G). Note that this is a zip file containing both the StableSR module and the VQVAE.
     - My resources: <[GoogleDrive](https://drive.google.com/file/d/1tWjkZQhfj07sHDR4r9Ta5Fk4iMp1t3Qw/view?usp=sharing)> <[百度网盘-提取码aguq](https://pan.baidu.com/s/1Nq_6ciGgKnTu0W14QcKKWg?pwd=aguq)>
-    - Put into stable-diffusion-webui/extensions/sd-webui-stablesr/models/
+    - Put the StableSR module (~400MB) into your stable-diffusion-webui/extensions/sd-webui-stablesr/models/
 
 ### 3. Optional components
 
 - Install [Tiled Diffusion & VAE]((https://github.com/pkuliyi2015/multidiffusion-upscaler-for-automatic1111)) extension
     - The original StableSR easily gets OOM for large images > 512.
     - For better quality and less VRAM usage, we recommend Tiled Diffusion & VAE.
-- Use the Official VQGAN VAE (~700MB)
-    - Official resources: In Progress
+- Use the Official VQGAN VAE
+    - Official resources: See the link in 2.
     - My resources: <[GoogleDrive](https://drive.google.com/file/d/1ARtDMia3_CbwNsGxxGcZ5UP75W4PeIEI/view?usp=share_link)> <[百度网盘-提取码83u9](https://pan.baidu.com/s/1YCYmGBethR9JZ8-eypoIiQ?pwd=83u9)>
-    - Put it in your stable-diffusion-webui/models/VAE
+    - Put the VQVAE (~700MB) into your stable-diffusion-webui/models/VAE
 
 ### 4. Extension Usage
 

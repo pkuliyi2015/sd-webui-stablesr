@@ -33,25 +33,25 @@ Licensed under S-Lab License 1.0
 
 > 安装成功后，你能在 img2img 最底下的Scripts下拉列表中看到 "StableSR"。
 
-### 2. 下载主要组件
+### 2. 必须模型
 
-- 你必须使用来自 StabilityAI 的 Stable Diffusion V2.1 512 **EMA** 模型（大约 5.21GB）
+- 你必须使用 StabilityAI 官方的 Stable Diffusion V2.1 512 **EMA** 模型（约 5.21GB）
     - 你可以从 [HuggingFace](https://huggingface.co/stabilityai/stable-diffusion-2-1-base) 下载
     - 放入 stable-diffusion-webui/models/Stable-Diffusion/ 文件夹
-- 下载提取出的 StableSR 模块（大约 400MB）
-    - 官方资源：施工中
+- 下载 StableSR 模块
+    - 官方资源：[HuggingFace](https://huggingface.co/Iceclear/StableSR/resolve/main/weibu_models.zip) (约1.2G)。请注意这是一个zip文件，同时包含StableSR模块和可选组件VQVAE.
     - 我的资源：<[GoogleDrive](https://drive.google.com/file/d/1tWjkZQhfj07sHDR4r9Ta5Fk4iMp1t3Qw/view?usp=sharing)> <[百度网盘-提取码aguq](https://pan.baidu.com/s/1Nq_6ciGgKnTu0W14QcKKWg?pwd=aguq)>
-    - 放入 stable-diffusion-webui/extensions/sd-webui-stablesr/models/ 文件夹
+    - 把StableSR模块（约400M大小）放入 stable-diffusion-webui/extensions/sd-webui-stablesr/models/ 文件夹
 
 ### 3. 可选组件
 
 - 安装 [Tiled Diffusion & VAE](https://github.com/pkuliyi2015/multidiffusion-upscaler-for-automatic1111) 扩展
     - 原始的 StableSR 对大于 512 的大图像容易出现 OOM。
     - 为了获得更好的质量和更少的 VRAM 使用，我们建议使用 Tiled Diffusion & VAE。
-- 使用官方 VQGAN VAE（大约 700MB）
-    - 官方资源：施工中
+- 使用官方 VQGAN VAE
+    - 官方资源：同2中的链接
     - 我的资源：<[GoogleDrive](https://drive.google.com/file/d/1ARtDMia3_CbwNsGxxGcZ5UP75W4PeIEI/view?usp=share_link)> <[百度网盘-提取码83u9](https://pan.baidu.com/s/1YCYmGBethR9JZ8-eypoIiQ?pwd=83u9)>
-    - 将它放在你的 stable-diffusion-webui/models/VAE 中
+    - 把VQVAE（约750MB大小）放在你的 stable-diffusion-webui/models/VAE 中
 
 ### 4. 扩展使用
 
