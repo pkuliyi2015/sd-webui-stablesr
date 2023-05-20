@@ -119,6 +119,8 @@ class Script(scripts.Script):
     def load_model_list(self):
         # traverse the CFG_PATH and add all files to the model list
         self.model_list = {}
+        if not MODEL_PATH.exists():
+            MODEL_PATH.mkdir()
         for file in MODEL_PATH.iterdir():
             if file.is_file():
                 # save tha absolute path
