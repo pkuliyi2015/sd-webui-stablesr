@@ -76,6 +76,11 @@ Relevant Links
     - When enabling it, the script ignores your denoising strength and gives you much more detailed images, but also changes the color & sharpness significantly
     - When disabling it, the script starts by adding some noise to your image. The result will be not fully detailed, even if you set denoising strength = 1 (but maybe aesthetically good). See [Comparison](https://imgsli.com/MTgwMTMx).
     - If you disable Pure Noise, we recommend denoising strength=1
+- What is "Color Fix"?
+    - This is to mitigate the color shift problem from StableSR and the tiling process.
+    - AdaIN simply adjusts the color statistics between the original and the outcome images. This is the official algorithm but ineffective in many cases.
+    - Wavelet decomposes the original and the outcome images into low and high frequency, and then replace the outcome image's low-frequency part (colors) with the original image's. This is very powerful for uneven color shifting. The algorithm is from GIMP and Krita, which will take several seconds for each image.
+    - When enabling color fix, the original image will also show up in your preview window, but will NOT be saved automatically.
 
 ### 6. Important Notice
 

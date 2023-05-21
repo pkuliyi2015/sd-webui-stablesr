@@ -46,13 +46,14 @@ from pathlib import Path
 from torch import Tensor
 from tqdm import tqdm
 
-from modules import scripts, processing, sd_samplers, devices
+from modules import scripts, processing, sd_samplers, devices, images
 from modules.processing import StableDiffusionProcessingImg2Img, Processed
+from modules.shared import opts
 from ldm.modules.diffusionmodules.openaimodel import UNetModel
 
 from srmodule.spade import SPADELayers
 from srmodule.struct_cond import EncoderUNetModelWT, build_unetwt
-from srmodule.colorfix import fix_color
+from srmodule.colorfix import adain_color_fix, wavelet_color_fix
 
 SD_WEBUI_PATH = Path.cwd()
 ME_PATH = SD_WEBUI_PATH / 'extensions' / 'sd-webui-stablesr'
@@ -150,12 +151,14 @@ class Script(scripts.Script):
         with gr.Row():
             scale_factor = gr.Slider(minimum=1, maximum=16, step=0.1, value=2, label='Scale Factor', elem_id=f'StableSR-scale')
         with gr.Row():
+            color_fix = gr.Dropdown(['None', 'Wavelet', 'AdaIN'], label="Color Fix", value='Wavelet', elem_id=f'StableSR-color-fix')
+            save_original = gr.Checkbox(label='Save Original', value=False, elem_id=f'StableSR-save-original', visible=color_fix.value != 'None')
+            color_fix.change(fn=lambda selected: gr.Checkbox.update(visible=selected != 'None'))
             pure_noise = gr.Checkbox(label='Pure Noise', value=True, elem_id=f'StableSR-pure-noise')
-            color_fix = gr.Checkbox(label='Color Fix', value=True, elem_id=f'StableSR-color-fix')
             
-        return [model, scale_factor, pure_noise, color_fix]
+        return [model, scale_factor, pure_noise, color_fix, save_original]
 
-    def run(self, p: StableDiffusionProcessingImg2Img, model: str, scale_factor:float, pure_noise: bool, color_fix:bool):
+    def run(self, p: StableDiffusionProcessingImg2Img, model: str, scale_factor:float, pure_noise: bool, color_fix:str, save_original:bool) -> Processed:
 
         if model == 'None':
             # do clean up
@@ -168,6 +171,10 @@ class Script(scripts.Script):
         
         if not os.path.exists(self.model_list[model]):
             raise gr.Error(f"Model {model} is not on your disk! Please refresh the model list!")
+
+        if color_fix not in ['None', 'Wavelet', 'AdaIN']:
+            print(f'[StableSR] Invalid color fix method: {color_fix}')
+            color_fix = 'None'
 
         # upscale the image, set the ouput size 
         init_img: Image = p.init_images[0]
@@ -222,11 +229,40 @@ class Script(scripts.Script):
         # Hook the unet, and unhook after processing.
         try:
             self.stablesr_model.hook(unet)
+            
+            if color_fix != 'None':
+                p.do_not_save_samples = True
+
             result: Processed = processing.process_images(p)
-            if color_fix:
+
+            if color_fix != 'None':
+
+                fixed_images = []
+                # fix the color
+                color_fix_func = wavelet_color_fix if color_fix == 'Wavelet' else adain_color_fix
                 for i in range(len(result.images)):
-                    result.images[i] = fix_color(result.images[i], init_img)
+                    try:
+                        fixed_images.append(color_fix_func(result.images[i], init_img))
+                    except Exception as e:
+                        print(f'[StableSR] Error fixing color with default method: {e}')
+
+                # save the fixed color images
+                for i in range(len(fixed_images)):
+                    try:
+                        images.save_image(fixed_images[i], p.outpath_samples, "", result.seed, result.prompt, opts.samples_format, info=result.infotexts, p=p)
+                    except Exception as e:
+                        print(f'[StableSR] Error saving color fixed image: {e}')
+
+                if save_original:
+                    for i in range(len(result.images)):
+                        try:
+                            images.save_image(result.images[i], p.outpath_samples, "", result.seed, result.prompt, opts.samples_format, info=result.infotexts, p=p, suffix="-before-color-fix")
+                        except Exception as e:
+                            print(f'[StableSR] Error saving original image: {e}')
+                result.images = result.images + fixed_images
+
             return result
+        
         finally:
             self.stablesr_model.unhook(unet)
 
