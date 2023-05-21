@@ -18,7 +18,23 @@ Licensed under S-Lab License 1.0
 - [论文](https://arxiv.org/abs/2305.07015)
 
 > 如果你觉得这个项目有帮助，请给我和 Jianyi Wang 的仓库点个星！⭐
----
+***
+
+## 功能
+
+1. **高保真图像放大**：
+    - 不修改人物脸部的同时添加非常细致的细节和纹理
+    - 适合大多数图片（真实或动漫，摄影作品或AIGC，SD 1.5或Midjourney图片...）
+2. **较少的显存消耗**：
+    - 我移除了官方实现中显存消耗高的模块。
+    - 剩下的模型比ControlNet Tile模型小得多，需要的显存也少得多。
+    - 当结合Tiled Diffusion & VAE时，你可以在有限的显存（例如，<12GB）中进行4k图像放大。
+    > 注意，sdp可能会不明原因炸显存。建议使用xformers。
+3. **小波分解颜色修正**：
+    - StableSR官方实现有明显的颜色偏移，这一问题在分块放大时更加明显。
+    - 我实现了一个强大的后处理技术，有效地匹配放大图像与原图的颜色。请看[小波分解颜色修正例子](https://imgsli.com/MTgwNDg2/)。
+
+***
 ## 使用
 
 ### 1. 安装
@@ -31,13 +47,12 @@ Licensed under S-Lab License 1.0
 
 ⚪ 方法 2: 施工中...
 
-> 安装成功后，你能在 img2img 最底下的Scripts下拉列表中看到 "StableSR"。
-
 ### 2. 必须模型
 
 - 你必须使用 StabilityAI 官方的 Stable Diffusion V2.1 512 **EMA** 模型（约 5.21GB）
     - 你可以从 [HuggingFace](https://huggingface.co/stabilityai/stable-diffusion-2-1-base) 下载
     - 放入 stable-diffusion-webui/models/Stable-Diffusion/ 文件夹
+    > 虽然StableSR需要一个SD2.1的模型权重，但你仍然可以放大来自SD1.5的图片。NSFW图片不会被模型扭曲，输出质量也不会受到影响。
 - 下载 StableSR 模块
     - 官方资源：[HuggingFace](https://huggingface.co/Iceclear/StableSR/resolve/main/weibu_models.zip) (约1.2G)。请注意这是一个zip文件，同时包含StableSR模块和可选组件VQVAE.
     - 我的资源：<[GoogleDrive](https://drive.google.com/file/d/1tWjkZQhfj07sHDR4r9Ta5Fk4iMp1t3Qw/view?usp=sharing)> <[百度网盘-提取码aguq](https://pan.baidu.com/s/1Nq_6ciGgKnTu0W14QcKKWg?pwd=aguq)>
@@ -98,7 +113,7 @@ Licensed under S-Lab License 1.0
         - 然而，在实践中，我发现这些特征对于大图像来说非常大。 (>10G 用于 4k 图像，即使是在 float16！)
         - 因此，**我移除了 VAE 解码器中的 CFW 组件**。由于这导致了对细节的较低保真度，我将尝试将它作为一个选项添加回去。
 
----
+***
 ## 许可
 
 此项目在以下许可下授权：

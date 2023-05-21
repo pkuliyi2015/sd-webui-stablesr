@@ -18,7 +18,25 @@ Relevant Links
 - [Paper on arXiv](https://arxiv.org/abs/2305.07015)
 
 > If you find this project useful, please give me & Jianyi Wang a star! ⭐
----
+
+***
+
+## Features
+
+1. **High-fidelity detailed image upscaling**:
+    - Being very detailed while keeping the face identity of your characters.
+    - Suitable for most images (Realistic or Anime, Photography or AIGC, SD 1.5 or Midjourney images...) [Official Examples](https://iceclear.github.io/projects/stablesr/)
+2. **Less VRAM consumption**
+    - I remove the VRAM-expensive modules in the official implementation.
+    - The remaining model is much smaller than ControlNet Tile model and requires less VRAM.
+    - When combined with Tiled Diffusion & VAE, you can do 4k image super-resolution with limited VRAM (e.g., < 12 GB).
+    > Please be aware that sdp may lead to OOM for some unknown reasons. You may use xformers instead.
+3. **Wavelet Color Fix**
+    - The official StableSR will significantly change the color of the generated image. The problem will be even more prominent when upscaling in tiles.
+    - I implement a powerful post-processing technique that effectively matches the color of the upscaled image to the original. See [Wavelet Color Fix Example](https://imgsli.com/MTgwNDg2/).
+
+***
+
 ## Usage
 
 ### 1. Installation
@@ -31,13 +49,14 @@ Relevant Links
 
 ⚪ Method 2: In progress...
 
-> After sucessful installation, you should see "StableSR" in img2img Scripts dropdown list.
-
 ### 2. Download the main components
 
 - You MUST use the Stable Diffusion V2.1 512 **EMA** checkpoint (~5.21GB) from StabilityAI
     - You can download it from [HuggingFace](https://huggingface.co/stabilityai/stable-diffusion-2-1-base)
     - Put into stable-diffusion-webui/models/Stable-Diffusion/
+
+    > While it requires a SD2.1 checkpoint, you can still upscale ANY image (even from SD1.5 or NSFW). Your image won't be censored and the output quality won't be affected.
+
 - Download the extracted StableSR module
     - Official resources: [HuggingFace](https://huggingface.co/Iceclear/StableSR/resolve/main/weibu_models.zip) (~1.2 G). Note that this is a zip file containing both the StableSR module and the VQVAE.
     - My resources: <[GoogleDrive](https://drive.google.com/file/d/1tWjkZQhfj07sHDR4r9Ta5Fk4iMp1t3Qw/view?usp=sharing)> <[百度网盘-提取码aguq](https://pan.baidu.com/s/1Nq_6ciGgKnTu0W14QcKKWg?pwd=aguq)>
@@ -98,7 +117,7 @@ Relevant Links
         - However, in practice, I found these features are astonishingly huge for large images. (>10G for 4k images even in float16!) 
         - Hence, **I removed the CFW component in VAE Decoder**. As this lead to inferior fidelity in details, I will try to add it back later as an option.
 
----
+***
 ## License
 
 This project is licensed under:

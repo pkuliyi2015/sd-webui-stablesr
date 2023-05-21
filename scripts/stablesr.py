@@ -247,16 +247,17 @@ class Script(scripts.Script):
                         print(f'[StableSR] Error fixing color with default method: {e}')
 
                 # save the fixed color images
+                n = p.n_iter
                 for i in range(len(fixed_images)):
                     try:
-                        images.save_image(fixed_images[i], p.outpath_samples, "", result.seed, result.prompt, opts.samples_format, info=result.infotexts, p=p)
+                        images.save_image(fixed_images[i], p.outpath_samples, "", p.all_seeds[i], p.all_prompts[i], opts.samples_format, info=result.infotexts[i], p=p)
                     except Exception as e:
                         print(f'[StableSR] Error saving color fixed image: {e}')
 
                 if save_original:
                     for i in range(len(result.images)):
                         try:
-                            images.save_image(result.images[i], p.outpath_samples, "", result.seed, result.prompt, opts.samples_format, info=result.infotexts, p=p, suffix="-before-color-fix")
+                            images.save_image(result.images[i], p.outpath_samples, "", p.all_seeds[i], p.all_prompts[i], opts.samples_format, info=result.infotexts[i], p=p, suffix="-before-color-fix")
                         except Exception as e:
                             print(f'[StableSR] Error saving original image: {e}')
                 result.images = result.images + fixed_images

@@ -70,8 +70,6 @@ def wavelet_blur(image: Tensor, radius: int):
     """
     # input shape: (1, 3, H, W)
     # convolution kernel
-    # input shape: (1, 3, H, W)
-    # convolution kernel
     kernel_vals = [
         [0.0625, 0.125, 0.0625],
         [0.125, 0.25, 0.125],
