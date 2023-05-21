@@ -153,7 +153,7 @@ class Script(scripts.Script):
         with gr.Row():
             color_fix = gr.Dropdown(['None', 'Wavelet', 'AdaIN'], label="Color Fix", value='Wavelet', elem_id=f'StableSR-color-fix')
             save_original = gr.Checkbox(label='Save Original', value=False, elem_id=f'StableSR-save-original', visible=color_fix.value != 'None')
-            color_fix.change(fn=lambda selected: gr.Checkbox.update(visible=selected != 'None'))
+            color_fix.change(fn=lambda selected: gr.Checkbox.update(visible=selected != 'None'), inputs=color_fix, outputs=save_original, show_progress=False)
             pure_noise = gr.Checkbox(label='Pure Noise', value=True, elem_id=f'StableSR-pure-noise')
             
         return [model, scale_factor, pure_noise, color_fix, save_original]
