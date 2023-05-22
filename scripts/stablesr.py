@@ -135,10 +135,6 @@ class Script(scripts.Script):
         return is_img2img
 
     def ui(self, is_img2img):
-        gr.HTML('<p>StableSR is a state-of-the-art super-resolution method.</p>')
-        gr.HTML('<p>1. You MUST use SD2.1-512-ema-pruned checkpoint. Euler a sampler is recommended.</p>')
-        gr.HTML('<p>2. Use Tiled Diffusion & VAE - Mixture of Diffusers for resolution > 512.</p>')
-        gr.HTML('<p>3. When use Tiled Diffusion, you MUST set the upscaler to None!</p>')
         with gr.Row():
             model = gr.Dropdown(list(self.model_list.keys()), label="SR Model")
             refresh = gr.Button(value='↻', variant='tool')

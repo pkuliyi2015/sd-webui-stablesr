@@ -41,13 +41,15 @@ Relevant Links
 
 ### 1. Installation
 
-⚪ Method 1: URL Install
+⚪ Method 1: Official Market
+
+- Open Automatic1111 WebUI -> Click Tab "Extensions" -> Click Tab "Available" -> Find "StableSR" -> Click "Install"
+
+⚪ Method 2: URL Install
 
 - Open Automatic1111 WebUI -> Click Tab "Extensions" -> Click Tab "Install from URL" -> type in https://github.com/pkuliyi2015/sd-webui-stablesr.git -> Click "Install" 
 
 ![installation](https://github.com/pkuliyi2015/multidiffusion-img-demo/blob/master/installation.png?raw=true)
-
-⚪ Method 2: In progress...
 
 ### 2. Download the main components
 
@@ -80,16 +82,23 @@ Relevant Links
     - Click the refresh button and select the StableSR checkpoint you have downloaded.
     - Choose a scale factor.
 - Upload your image and start generation (can work without prompts).
-
-### 5. Useful Tips
-
-- Euler a sampler is recommended. Steps >= 20.
+- Euler a sampler is recommended. CFG Scale<=2, Steps >= 20.
 - For output image size > 512, we recommend using Tiled Diffusion & VAE, otherwise, the image quality may not be ideal, and the VRAM usage will be huge. 
-- Here are the Tiled Diffusion settings that replicate the official behavior in the paper.
+- Here are the official Tiled Diffusion settings:
     - Method = Mixture of Diffusers
     - Latent tile size = 64, Latent tile overlap = 32
     - Latent tile batch size as large as possible before Out of Memory.
-    - Upscaler MUST be None.
+    - Upscaler MUST be None (will not upscale here; instead, upscale in StableSR).
+- The following figure shows the recommended settings for 24GB VRAM.
+    - For a 6GB device, **just change Tiled Diffusion Latent tile batch size to 1, Tiled VAE Encoder Tile Size to 1024, Decoder Tile Size to 128.**
+    - SDP attention optimization may lead to OOM. Please use xformers in that case.
+    - You DON'T need to change other settings in Tiled Diffusion & Tiled VAE unless you have a very deep understanding. **These params are almost optimal for StableSR.**
+![recommended settings](https://github.com/pkuliyi2015/multidiffusion-img-demo/blob/master/recommended_settings_24GB.jpg?raw=true)
+
+    
+
+### 5. Options Explained
+
 - What is "Pure Noise"?
     - Pure Noise refers to starting from a fully random noise tensor instead of your image. **This is the default behavior in the StableSR paper.**
     - When enabling it, the script ignores your denoising strength and gives you much more detailed images, but also changes the color & sharpness significantly

@@ -39,13 +39,15 @@ Licensed under S-Lab License 1.0
 
 ### 1. 安装
 
-⚪ 方法 1: URL 安装
+⚪ 方法 1: 官方市场
+
+- 打开Automatic1111 WebUI -> 点击“扩展”选项卡 -> 点击“可用”选项卡 -> 找到“StableSR” -> 点击“安装”
+
+⚪ 方法 2: URL 安装
 
 - 打开 Automatic1111 WebUI -> 点击 "Extensions" 标签页 -> 点击 "Install from URL" 标签页 -> 输入 https://github.com/pkuliyi2015/sd-webui-stablesr.git -> 点击 "Install"
 
 ![installation](https://github.com/pkuliyi2015/multidiffusion-img-demo/blob/master/installation.png?raw=true)
-
-⚪ 方法 2: 施工中...
 
 ### 2. 必须模型
 
@@ -76,16 +78,21 @@ Licensed under S-Lab License 1.0
     - 点击刷新按钮，选择你已下载的 StableSR 检查点。
     - 选择一个放大因子。
 - 上传你的图像并开始生成（无需提示也能工作）。
-
-### 5. 跑图提示
-
-- 推荐使用 Euler a 采样器。步数 >= 20。
+- 推荐使用 Euler a 采样器，CFG值<=2，步数 >= 20。
 - 如果生成图像尺寸 > 512，我们推荐使用 Tiled Diffusion & VAE，否则，图像质量可能不理想，VRAM 使用量也会很大。
-- 这里有一些 Tiled Diffusion 设置，可以复制官方的结果。
+- 这里是官方推荐的 Tiled Diffusion 设置。
     - 方法 = Mixture of Diffusers
     - 隐空间Tile大小 = 64，隐空间Tile重叠 = 32
     - Tile批大小尽可能大，直到差一点点就炸显存为止。
     - Upscaler**必须**选择None。
+- 下图是24GB显存的推荐设置。
+    - 对于4GB的设备，**只需将Tiled Diffusion Latent tile批处理大小改为1，Tiled VAE编码器Tile大小改为1024，解码器Tile大小改为128。**
+    - SDP注意力优化可能会导致OOM（内存不足），因此推荐使用xformers。
+    - 除非你有深入的理解，否则你**不要**改变Tiled Diffusion & Tiled VAE中的其他设置。**这些参数对于StableSR基本上是最优解。**
+![推荐设置](https://github.com/pkuliyi2015/multidiffusion-img-demo/blob/master/recommended_settings_24GB.jpg?raw=true)
+
+### 5. 参数解释
+
 - 什么是 "Pure Noise"？
     - Pure Noise也就是纯噪声，指的是从完全随机的噪声张量开始，而不是从你的图像开始。**这是 StableSR 论文中的默认做法。**
     - 启用这个选项时，脚本会忽略你的重绘幅度设置。产出将会是更详细的图像，但也会显著改变颜色和锐度。
