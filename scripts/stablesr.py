@@ -46,7 +46,7 @@ from pathlib import Path
 from torch import Tensor
 from tqdm import tqdm
 
-from modules import scripts, processing, sd_samplers, devices, images
+from modules import scripts, processing, sd_samplers, devices, images, shared
 from modules.processing import StableDiffusionProcessingImg2Img, Processed
 from modules.shared import opts
 from ldm.modules.diffusionmodules.openaimodel import UNetModel
@@ -193,9 +193,7 @@ class Script(scripts.Script):
 
         print('[StableSR] Target image size: {}x{}'.format(init_img.width, init_img.height))
 
-        unet: UNetModel = p.sd_model.model.diffusion_model
-        # print(unet.input_blocks)
-        first_param = unet.parameters().__next__()
+        first_param = shared.sd_model.parameters().__next__()
         if self.last_path != self.model_list[model]:
             # load the model
             self.stablesr_model = None
@@ -204,74 +202,62 @@ class Script(scripts.Script):
             self.last_path = self.model_list[model]
 
         def sample_custom(conditioning, unconditional_conditioning, seeds, subseeds, subseed_strength, prompts):
-            self.stablesr_model.set_latent_image(p.init_latent)
-            x = processing.create_random_tensors(p.init_latent.shape[1:], seeds=seeds, subseeds=subseeds, subseed_strength=p.subseed_strength, seed_resize_from_h=p.seed_resize_from_h, seed_resize_from_w=p.seed_resize_from_w, p=p)
-            sampler = sd_samplers.create_sampler(p.sampler_name, p.sd_model)
-            if pure_noise:
-                # NOTE: use txt2img instead of img2img sampling
-                samples = sampler.sample(p, x, conditioning, unconditional_conditioning, image_conditioning=p.image_conditioning)
-            else:
-                if p.initial_noise_multiplier != 1.0:
-                    p.extra_generation_params["Noise multiplier"] =p.initial_noise_multiplier
-                    x *= p.initial_noise_multiplier
-                samples = sampler.sample_img2img(p, p.init_latent, x, conditioning, unconditional_conditioning, image_conditioning=p.image_conditioning)
-            
-            if p.mask is not None:
-                samples = samples * p.nmask + p.init_latent * p.mask
-            del x
-            devices.torch_gc()
-            return samples
+            try:
+                unet: UNetModel = shared.sd_model.model.diffusion_model
+                self.stablesr_model.hook(unet)
+                self.stablesr_model.set_latent_image(p.init_latent)
+                x = processing.create_random_tensors(p.init_latent.shape[1:], seeds=seeds, subseeds=subseeds, subseed_strength=p.subseed_strength, seed_resize_from_h=p.seed_resize_from_h, seed_resize_from_w=p.seed_resize_from_w, p=p)
+                sampler = sd_samplers.create_sampler(p.sampler_name, p.sd_model)
+                if pure_noise:
+                    # NOTE: use txt2img instead of img2img sampling
+                    samples = sampler.sample(p, x, conditioning, unconditional_conditioning, image_conditioning=p.image_conditioning)
+                else:
+                    if p.initial_noise_multiplier != 1.0:
+                        p.extra_generation_params["Noise multiplier"] =p.initial_noise_multiplier
+                        x *= p.initial_noise_multiplier
+                    samples = sampler.sample_img2img(p, p.init_latent, x, conditioning, unconditional_conditioning, image_conditioning=p.image_conditioning)
+                
+                if p.mask is not None:
+                    samples = samples * p.nmask + p.init_latent * p.mask
+                del x
+                devices.torch_gc()
+                return samples
+            finally:
+                self.stablesr_model.unhook(unet)
 
                 
         # replace the sample function
         p.sample = sample_custom
         
-        # Hook the unet, and unhook after processing.
-        try:
-            self.stablesr_model.hook(unet)
-            
-            if color_fix != 'None':
-                p.do_not_save_samples = True
+        if color_fix != 'None':
+            p.do_not_save_samples = True
 
-            result: Processed = processing.process_images(p)
+        result: Processed = processing.process_images(p)
 
-            if color_fix != 'None':
+        if color_fix != 'None':
 
-                fixed_images = []
-                # fix the color
-                color_fix_func = wavelet_color_fix if color_fix == 'Wavelet' else adain_color_fix
+            fixed_images = []
+            # fix the color
+            color_fix_func = wavelet_color_fix if color_fix == 'Wavelet' else adain_color_fix
+            for i in range(len(result.images)):
+                try:
+                    fixed_images.append(color_fix_func(result.images[i], init_img))
+                except Exception as e:
+                    print(f'[StableSR] Error fixing color with default method: {e}')
+
+            # save the fixed color images
+            for i in range(len(fixed_images)):
+                try:
+                    images.save_image(fixed_images[i], p.outpath_samples, "", p.all_seeds[i], p.all_prompts[i], opts.samples_format, info=result.infotexts[i], p=p)
+                except Exception as e:
+                    print(f'[StableSR] Error saving color fixed image: {e}')
+
+            if save_original:
                 for i in range(len(result.images)):
                     try:
-                        fixed_images.append(color_fix_func(result.images[i], init_img))
+                        images.save_image(result.images[i], p.outpath_samples, "", p.all_seeds[i], p.all_prompts[i], opts.samples_format, info=result.infotexts[i], p=p, suffix="-before-color-fix")
                     except Exception as e:
-                        print(f'[StableSR] Error fixing color with default method: {e}')
+                        print(f'[StableSR] Error saving original image: {e}')
+            result.images = result.images + fixed_images
 
-                # save the fixed color images
-                n = p.n_iter
-                for i in range(len(fixed_images)):
-                    try:
-                        images.save_image(fixed_images[i], p.outpath_samples, "", p.all_seeds[i], p.all_prompts[i], opts.samples_format, info=result.infotexts[i], p=p)
-                    except Exception as e:
-                        print(f'[StableSR] Error saving color fixed image: {e}')
-
-                if save_original:
-                    for i in range(len(result.images)):
-                        try:
-                            images.save_image(result.images[i], p.outpath_samples, "", p.all_seeds[i], p.all_prompts[i], opts.samples_format, info=result.infotexts[i], p=p, suffix="-before-color-fix")
-                        except Exception as e:
-                            print(f'[StableSR] Error saving original image: {e}')
-                result.images = result.images + fixed_images
-
-            return result
-        
-        finally:
-            self.stablesr_model.unhook(unet)
-
-    
-
-            
-
-        
-
-
-
+        return result
