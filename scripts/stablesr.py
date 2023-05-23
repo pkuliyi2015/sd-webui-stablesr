@@ -206,7 +206,8 @@ class Script(scripts.Script):
         if self.last_path != self.model_list[model]:
             # load the model
             self.stablesr_model = None
-            # get the type and the device of the unet model's first parameter
+        
+        if self.stablesr_model is None:
             self.stablesr_model = StableSR(self.model_list[model], dtype=first_param.dtype, device=first_param.device)
             self.last_path = self.model_list[model]
 
