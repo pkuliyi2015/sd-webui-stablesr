@@ -125,10 +125,12 @@ class SPADELayers(nn.Module):
         self.output_ids = list(range(12))
         self.mid_ids = [0,2]
         self.forward_cache_name = 'org_forward_stablesr'
+        self.unet = None
 
 
     def hook(self, unet: UNetModel, get_struct_cond):
         # hook all resblocks
+        self.unet = unet
         resblock: ResBlock = None
         for i in self.input_ids:
             resblock = unet.input_blocks[i][0]
@@ -154,7 +156,9 @@ class SPADELayers(nn.Module):
                 setattr(resblock, self.forward_cache_name, resblock._forward)
             resblock._forward = lambda x, timesteps, resblock=resblock, spade=self.middle_block[i]: dual_resblock_forward(resblock, x, timesteps, spade, get_struct_cond)
 
-    def unhook(self, unet: UNetModel):
+    def unhook(self):
+        unet = self.unet
+        if unet is None: return
         resblock: ResBlock = None
         for i in self.input_ids:
             resblock = unet.input_blocks[i][0]
@@ -173,6 +177,7 @@ class SPADELayers(nn.Module):
             if hasattr(resblock, self.forward_cache_name):
                 resblock._forward = getattr(resblock, self.forward_cache_name)
                 delattr(resblock, self.forward_cache_name)
+        self.unet = None
 
 
     def load_from_dict(self, state_dict):
