@@ -138,7 +138,7 @@ We currently has two versions. They have similar amount of details, but the 768 
 
 ### 6. Important Notice
 
-> Why my results are different from the offical examples?
+> Why my results are different from the official examples?
 
 - It is not your or our fault.
     - This extension has the same UNet model weights as the StableSR if installed correctly. 
