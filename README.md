@@ -21,6 +21,20 @@ Relevant Links
 
 ***
 
+## Important Update
+
+- We are happy to release a new SD 2.1 768 version of StableSR! (Thanks to Jianyi Wang)
+    - It produces similar amount of details, but with **significantly less artifacts** and **better color**.
+    - It supports the resolution of 768 * 768. 
+- To enjoy the new model:
+    - Use the SD 2.1 768 base model. It can be download from [HuggingFace](https://huggingface.co/stabilityai/stable-diffusion-2-1)
+    - The corresponding SR Module (~400MB): [Official Resource](https://huggingface.co/Iceclear/StableSR/blob/main/webui_768v_139.ckpt)
+    - Now you can use a larger tile size in the Tiled Diffusion (96 * 96, the same as default settings), the speed can be slightly faster.
+    - Keep other things the same.
+- Janyi Wang keeps trying to train more powerful SR modules suitable for AIGC images. These models will be tuned on SD2.1 768 or SDXL later.
+
+***
+
 ## Features
 
 1. **High-fidelity detailed image upscaling**:
@@ -52,17 +66,28 @@ Relevant Links
 ![installation](https://github.com/pkuliyi2015/multidiffusion-img-demo/blob/master/installation.png?raw=true)
 
 ### 2. Download the main components
+We currently has two versions. They have similar amount of details, but the 768 has less artifacts.
+#### 🆕 SD2.1 768 Version
+- You MUST use the Stable Diffusion V2.1 768 **EMA** checkpoint (~5.21GB) from StabilityAI
+    - You can download it from [HuggingFace](https://huggingface.co/stabilityai/stable-diffusion-2-1)
+    - Put into stable-diffusion-webui/models/Stable-Diffusion/
 
+- Download the extracted StableSR module
+    - [Official Resource](https://huggingface.co/Iceclear/StableSR/blob/main/webui_768v_139.ckpt)
+    - Put the StableSR module (~400MB) into your stable-diffusion-webui/extensions/sd-webui-stablesr/models/
+
+****
+#### SD2.1 512 Version (Sharper, but more artifacts)
 - You MUST use the Stable Diffusion V2.1 512 **EMA** checkpoint (~5.21GB) from StabilityAI
     - You can download it from [HuggingFace](https://huggingface.co/stabilityai/stable-diffusion-2-1-base)
     - Put into stable-diffusion-webui/models/Stable-Diffusion/
-
-    > While it requires a SD2.1 checkpoint, you can still upscale ANY image (even from SD1.5 or NSFW). Your image won't be censored and the output quality won't be affected.
 
 - Download the extracted StableSR module
     - Official resources: [HuggingFace](https://huggingface.co/Iceclear/StableSR/resolve/main/weibu_models.zip) (~1.2 G). Note that this is a zip file containing both the StableSR module and the VQVAE.
     - My resources: <[GoogleDrive](https://drive.google.com/file/d/1tWjkZQhfj07sHDR4r9Ta5Fk4iMp1t3Qw/view?usp=sharing)> <[百度网盘-提取码aguq](https://pan.baidu.com/s/1Nq_6ciGgKnTu0W14QcKKWg?pwd=aguq)>
     - Put the StableSR module (~400MB) into your stable-diffusion-webui/extensions/sd-webui-stablesr/models/
+
+> While we use SD2.1 checkpoint, you can still upscale ANY image (even from SD1.5 or NSFW). Your image won't be censored and the output quality won't be affected.
 
 ### 3. Optional components
 
@@ -86,7 +111,8 @@ Relevant Links
 - For output image size > 512, we recommend using Tiled Diffusion & VAE, otherwise, the image quality may not be ideal, and the VRAM usage will be huge. 
 - Here are the official Tiled Diffusion settings:
     - Method = Mixture of Diffusers
-    - Latent tile size = 64, Latent tile overlap = 32
+        - For StableSR 768 version, you can use Latent tile size = 96, Latent tile overlap = 48
+        - For StableSR 512 version, you can use Latent tile size = 64, Latent tile overlap = 32
     - Latent tile batch size as large as possible before Out of Memory.
     - Upscaler MUST be None (will not upscale here; instead, upscale in StableSR).
 - The following figure shows the recommended settings for 24GB VRAM.

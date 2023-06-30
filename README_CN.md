@@ -20,6 +20,19 @@ Licensed under S-Lab License 1.0
 > 如果你觉得这个项目有帮助，请给我和 Jianyi Wang 的仓库点个星！⭐
 ***
 
+## 重要更新
+
+- 我们很高兴发布 StableSR 的新版本 SD 2.1 768！（感谢 Jianyi Wang）
+    - 它产生类似的细节，但具有**更自然的边缘（更少的白边黑边）**和**更好的颜色**。
+    - 它支持 768 * 768 的分辨率。
+- 要使用新模型：
+    - 使用 SD 2.1 768 基础模型。可以从[HuggingFace](https://huggingface.co/stabilityai/stable-diffusion-2-1)下载。
+    - 下载相应的 SR 模块（约400MB）：[官方资源](https://huggingface.co/Iceclear/StableSR/blob/main/webui_768v_139.ckpt)
+    - 现在在 Tiled Diffusion 中可以使用更大的块大小（96 * 96，与默认设置相同），速度可能会稍微更快。
+    - 其他设置保持不变。
+- Jianyi Wang一直在努力训练更强大的适用于 AIGC 图像的 SR 模块。这些模型都将基于 SD2.1 768 或 SDXL 进行调整。SD2.1 512版本将不再继续尝试。
+
+***
 ## 功能
 
 1. **高保真图像放大**：
@@ -51,14 +64,28 @@ Licensed under S-Lab License 1.0
 
 ### 2. 必须模型
 
-- 你必须使用 StabilityAI 官方的 Stable Diffusion V2.1 512 **EMA** 模型（约 5.21GB）
-    - 你可以从 [HuggingFace](https://huggingface.co/stabilityai/stable-diffusion-2-1-base) 下载
-    - 放入 stable-diffusion-webui/models/Stable-Diffusion/ 文件夹
-    > 虽然StableSR需要一个SD2.1的模型权重，但你仍然可以放大来自SD1.5的图片。NSFW图片不会被模型扭曲，输出质量也不会受到影响。
-- 下载 StableSR 模块
-    - 官方资源：[HuggingFace](https://huggingface.co/Iceclear/StableSR/resolve/main/weibu_models.zip) (约1.2G)。请注意这是一个zip文件，同时包含StableSR模块和可选组件VQVAE.
-    - 我的资源：<[GoogleDrive](https://drive.google.com/file/d/1tWjkZQhfj07sHDR4r9Ta5Fk4iMp1t3Qw/view?usp=sharing)> <[百度网盘-提取码aguq](https://pan.baidu.com/s/1Nq_6ciGgKnTu0W14QcKKWg?pwd=aguq)>
-    - 把StableSR模块（约400M大小）放入 stable-diffusion-webui/extensions/sd-webui-stablesr/models/ 文件夹
+我们目前有两个版本。它们产生的细节相似，但是768版本的边缘更自然。
+#### 🆕 SD2.1 768 版本
+- 您必须使用 StabilityAI 提供的 Stable Diffusion V2.1 768 **EMA** 检查点（约5.21GB）
+    - 您可以从 [HuggingFace](https://huggingface.co/stabilityai/stable-diffusion-2-1) 下载它
+    - 将其放入 stable-diffusion-webui/models/Stable-Diffusion/ 文件夹中
+
+- 下载提取后的 StableSR 模块
+    - [官方资源](https://huggingface.co/Iceclear/StableSR/blob/main/webui_768v_139.ckpt)
+    - 将 StableSR 模块（约400MB）放入 stable-diffusion-webui/extensions/sd-webui-stablesr/models/ 文件夹中
+
+****
+#### SD2.1 512 版本（更锐利，但黑边白边现象更明显）
+- 您必须使用 StabilityAI 提供的 Stable Diffusion V2.1 512 **EMA** 检查点（约5.21GB）
+    - 您可以从 [HuggingFace](https://huggingface.co/stabilityai/stable-diffusion-2-1-base) 下载它
+    - 将其放入 stable-diffusion-webui/models/Stable-Diffusion/ 文件夹中
+
+- 下载提取后的 StableSR 模块
+    - 官方资源：[HuggingFace](https://huggingface.co/Iceclear/StableSR/resolve/main/weibu_models.zip)（约1.2G）。请注意，这是一个包含 StableSR 模块和 VQVAE 的压缩文件。
+    - 我的资源：[GoogleDrive](https://drive.google.com/file/d/1tWjkZQhfj07sHDR4r9Ta5Fk4iMp1t3Qw/view?usp=sharing) [百度网盘-提取码aguq](https://pan.baidu.com/s/1Nq_6ciGgKnTu0W14QcKKWg?pwd=aguq)
+    - 将 StableSR 模块（约400MB）放入 stable-diffusion-webui/extensions/sd-webui-stablesr/models/ 文件夹中
+
+> 虽然我们使用了 SD2.1 的检查点，但您仍然可以放大任何图片（甚至来自 SD1.5 或 NSFW）。您的图片不会被审查，输出质量也不会受到影响。
 
 ### 3. 可选组件
 
