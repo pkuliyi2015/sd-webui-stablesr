@@ -25,15 +25,15 @@ Relevant Links
 
 - 2023.07.01: We occasionally found that **proper negative prompts can significantly enhance the details of StableSR.**
     - We use CFG Scale=7 with the following negative prompts: 3d, cartoon, anime, sketches, (worst quality:2), (low quality:2)
-    - Click [comparison](https://imgsli.com/MTg5MjM1) to see the significant power of negative prompts.
-    - In our test, common positive prompts (like masterpiece, best quality, 1girl, realistic) doesn't bring significant improvements.
-    - But we are not sure if there exists some useful positive prompts. Please feel free to share your test results in this repo's discussion panel.
+    - Click [comparison1](https://imgsli.com/MTg5MjM1) to see the significant power of negative prompts.
+    - Postive prompts are not very useful, but it also helps. You can try (masterpiece:2), (best quality:2), (realistic:2),(very clear:2)
+    - With the above prompts, we are trying our best to approach close-source project GigaGAN's quality (while ours are still worse than their demo). Click [comparison2](https://imgsli.com/MTg5MzAx/) to see our current capability on 128x128->1024x1024 upscaling.
 - 2023.06.30: We are happy to release a new SD 2.1 768 version of StableSR! (Thanks to Jianyi Wang)
     - It produces similar amount of details, but with **significantly less artifacts** and **better color**.
     - It supports the resolution of 768 * 768. 
 - To enjoy the new model:
     - Use the SD 2.1 768 base model. It can be download from [HuggingFace](https://huggingface.co/stabilityai/stable-diffusion-2-1)
-    - The corresponding SR Module (~400MB): [Official Resource](https://huggingface.co/Iceclear/StableSR/blob/main/webui_768v_139.ckpt)
+    - The corresponding SR Module (~400MB): [Official Resource](https://huggingface.co/Iceclear/StableSR/blob/main/webui_768v_139.ckpt), [我的百度网盘-提取码8ju9](https://pan.baidu.com/s/17on7GA2RLvVzdDnBwA0N0g?pwd=8ju9)
     - Now you can use a larger tile size in the Tiled Diffusion (96 * 96, the same as default settings), the speed can be slightly faster.
     - Keep other things the same.
 - Janyi Wang keeps trying to train more powerful SR modules suitable for AIGC images. These models will be tuned on SD2.1 768 or SDXL later.

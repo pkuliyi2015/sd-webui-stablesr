@@ -22,17 +22,17 @@ Licensed under S-Lab License 1.0
 
 ## 重要更新
 
-- 2023.07.01: 我们偶然发现 **合适的负面prompt会大幅提高StableSR的生成质量.**
+- 2023.07.01: 我们偶然发现 **合适的负面提示词会大幅提高StableSR的生成质量.**
     - 我们使用了CFG Scale=7以及下面的负面提示词：3d, cartoon, anime, sketches, (worst quality:2), (low quality:2)
     - 点击[对比](https://imgsli.com/MTg5MjM1)来查看负面提示词的威力
-    - 在我们的测试中, 常见正面提示词（比如masterpiece, best quality, 1girl, realistic）没有什么显著效果。
-    - 但我们不确定到底有没有有用的正面提示词。欢迎在本仓库的讨论区中分享你的测试结果.
+    - 正面提示词用处不大，但你依然可以尝试下面的提示词：(masterpiece:2), (best quality:2), (realistic:2),(very clear:2)
+    - 使用上面提示词，我们正努力接近闭源方法GigaGAN的放大效果（虽然还有差距）。点击[comparison2](https://imgsli.com/MTg5MzAx/)看看实力。
 - 2023.06.30: 我们很高兴发布 StableSR 的新版本 SD 2.1 768！（感谢 Jianyi Wang）
     - 它产生类似的细节，但具有**更自然的边缘（更少的白边黑边）**和**更好的颜色**。
     - 它支持 768 * 768 的分辨率。
 - 要使用新模型：
     - 使用 SD 2.1 768 基础模型。可以从[HuggingFace](https://huggingface.co/stabilityai/stable-diffusion-2-1)下载。
-    - 下载相应的 SR 模块（约400MB）：[官方资源](https://huggingface.co/Iceclear/StableSR/blob/main/webui_768v_139.ckpt)
+    - 下载相应的 SR 模块（约400MB）：[官方资源](https://huggingface.co/Iceclear/StableSR/blob/main/webui_768v_139.ckpt)，[我的百度网盘-提取码8ju9](https://pan.baidu.com/s/17on7GA2RLvVzdDnBwA0N0g?pwd=8ju9)
     - 现在在 Tiled Diffusion 中可以使用更大的块大小（96 * 96，与默认设置相同），速度可能会稍微更快。
     - 其他设置保持不变。
 - Jianyi Wang一直在努力训练更强大的适用于 AIGC 图像的 SR 模块。这些模型都将基于 SD2.1 768 或 SDXL 进行调整。SD2.1 512版本将不再继续尝试。
