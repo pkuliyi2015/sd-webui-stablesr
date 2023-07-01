@@ -22,7 +22,12 @@ Licensed under S-Lab License 1.0
 
 ## 重要更新
 
-- 我们很高兴发布 StableSR 的新版本 SD 2.1 768！（感谢 Jianyi Wang）
+- 2023.07.01: 我们偶然发现 **合适的负面prompt会大幅提高StableSR的生成质量.**
+    - 我们使用了CFG Scale=7以及下面的负面提示词：3d, cartoon, anime, sketches, (worst quality:2), (low quality:2)
+    - 点击[对比](https://imgsli.com/MTg5MjM1)来查看负面提示词的威力
+    - 在我们的测试中, 常见正面提示词（比如masterpiece, best quality, 1girl, realistic）没有什么显著效果。
+    - 但我们不确定到底有没有有用的正面提示词。欢迎在本仓库的讨论区中分享你的测试结果.
+- 2023.06.30: 我们很高兴发布 StableSR 的新版本 SD 2.1 768！（感谢 Jianyi Wang）
     - 它产生类似的细节，但具有**更自然的边缘（更少的白边黑边）**和**更好的颜色**。
     - 它支持 768 * 768 的分辨率。
 - 要使用新模型：
@@ -105,7 +110,9 @@ Licensed under S-Lab License 1.0
     - 点击刷新按钮，选择你已下载的 StableSR 检查点。
     - 选择一个放大因子。
 - 上传你的图像并开始生成（无需提示也能工作）。
-- 推荐使用 Euler a 采样器，CFG值<=2，步数 >= 20。
+- 推荐使用 Euler a 采样器，CFG值=7，步数 >= 20。
+    - 尽管StableSR不需要提示词也能工作，我们发现负面提示词能显著增强细节。比如使用3d, cartoon, anime, sketches, (worst quality:2), (low quality:2)
+    - 点击查看有/没有prompt的[对比](https://imgsli.com/MTg5MjM1)
 - 如果生成图像尺寸 > 512，我们推荐使用 Tiled Diffusion & VAE，否则，图像质量可能不理想，VRAM 使用量也会很大。
 - 这里是官方推荐的 Tiled Diffusion 设置。
     - 方法 = Mixture of Diffusers

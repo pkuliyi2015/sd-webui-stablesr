@@ -23,7 +23,12 @@ Relevant Links
 
 ## Important Update
 
-- We are happy to release a new SD 2.1 768 version of StableSR! (Thanks to Jianyi Wang)
+- 2023.07.01: We occasionally found that **proper negative prompts can significantly enhance the details of StableSR.**
+    - We use CFG Scale=7 with the following negative prompts: 3d, cartoon, anime, sketches, (worst quality:2), (low quality:2)
+    - Click [comparison](https://imgsli.com/MTg5MjM1) to see the significant power of negative prompts.
+    - In our test, common positive prompts (like masterpiece, best quality, 1girl, realistic) doesn't bring significant improvements.
+    - But we are not sure if there exists some useful positive prompts. Please feel free to share your test results in this repo's discussion panel.
+- 2023.06.30: We are happy to release a new SD 2.1 768 version of StableSR! (Thanks to Jianyi Wang)
     - It produces similar amount of details, but with **significantly less artifacts** and **better color**.
     - It supports the resolution of 768 * 768. 
 - To enjoy the new model:
@@ -106,8 +111,9 @@ We currently has two versions. They have similar amount of details, but the 768 
     - Select the StableSR script.
     - Click the refresh button and select the StableSR checkpoint you have downloaded.
     - Choose a scale factor.
-- Upload your image and start generation (can work without prompts).
-- Euler a sampler is recommended. CFG Scale<=2, Steps >= 20.
+- Euler a sampler is recommended. CFG Scale=7, Steps >= 20.
+    - While StableSR can work without any prompts, we recently found that negative prompts can significantly improve details. Example negative prompts: 3d, cartoon, anime, sketches, (worst quality:2), (low quality:2)
+    - Click to see [comparison] with/without pos/neg prompts(https://imgsli.com/MTg5MjM1)
 - For output image size > 512, we recommend using Tiled Diffusion & VAE, otherwise, the image quality may not be ideal, and the VRAM usage will be huge. 
 - Here are the official Tiled Diffusion settings:
     - Method = Mixture of Diffusers
