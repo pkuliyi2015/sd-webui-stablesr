@@ -251,6 +251,14 @@ class Script(scripts.Script):
 
             fixed_images = []
             # fix the color
+
+            for i in range(len(result.images)):
+                if result.images[i].mode == "RGBA":
+                    # wavelet_color_fix expects shape[1] of input image is 3
+                    result.images[i] = result.images[i].convert(mode = "RGB")
+                    pass
+                pass
+
             color_fix_func = wavelet_color_fix if color_fix == 'Wavelet' else adain_color_fix
             for i in range(len(result.images)):
                 try:
