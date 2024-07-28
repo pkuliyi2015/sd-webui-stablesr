@@ -1,8 +1,6 @@
 # StableSR for Stable Diffusion WebUI
 
-Licensed under S-Lab License 1.0
-
-[![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
+Licensed under [S-Lab License 1.0](https://github.com/IceClear/StableSR/blob/main/LICENSE.txt)
 
 English｜[中文](README_CN.md)
 
@@ -51,7 +49,7 @@ Relevant Links
     - When combined with Tiled Diffusion & VAE, you can do 4k image super-resolution with limited VRAM (e.g., < 12 GB).
     > Please be aware that sdp may lead to OOM for some unknown reasons. You may use xformers instead.
 3. **Wavelet Color Fix**
-    - The official StableSR will significantly change the color of the generated image. The problem will be even more prominent when upscaling in tiles.
+    - The official StableSR will significantly change the color of the generated image. The problem will be even more prominent when upscaling in tiles (Have been merged into official repo).
     - I implement a powerful post-processing technique that effectively matches the color of the upscaled image to the original. See [Wavelet Color Fix Example](https://imgsli.com/MTgwNDg2/).
 
 ***
@@ -163,10 +161,7 @@ We currently has two versions. They have similar amount of details, but the 768 
 
 This project is licensed under:
 
-- S-Lab License 1.0.
-- [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa], due to the use of the NVIDIA SPADE module.
-
-[![CC BY-NC-SA 4.0][cc-by-nc-sa-image]][cc-by-nc-sa]
+- [S-Lab License 1.0](https://github.com/IceClear/StableSR/blob/main/LICENSE.txt).
 
 [cc-by-nc-sa]: http://creativecommons.org/licenses/by-nc-sa/4.0/
 [cc-by-nc-sa-image]: https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png
@@ -179,8 +174,7 @@ This project is licensed under:
 
 ### Important Notice for Outcome Images
 
-- Please note that the CC BY-NC-SA 4.0 license in the NVIDIA SPADE module also prohibits the commercial use of outcome images. 
-- Jianyi Wang may change the SPADE module to a commercial-friendly one but he is busy.
+- Please note that the [S-Lab License 1.0](https://github.com/IceClear/StableSR/blob/main/LICENSE.txt) prohibits the commercial use of outcome images. 
 - If you wish to *speed up* his process for commercial purposes, please contact him through email: iceclearwjy@gmail.com
 
 ## Acknowledgments
