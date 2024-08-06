@@ -14,6 +14,7 @@ Relevant Links
 - [Project Page](https://iceclear.github.io/projects/stablesr/)
 - [Official Repository](https://github.com/IceClear/StableSR)
 - [Paper on arXiv](https://arxiv.org/abs/2305.07015)
+- [Paper on IJCV](https://link.springer.com/article/10.1007/s11263-024-02168-7)
 
 > If you find this project useful, please give me & Jianyi Wang a star! ⭐
 
@@ -176,6 +177,16 @@ This project is licensed under:
 
 - Please note that the [S-Lab License 1.0](https://github.com/IceClear/StableSR/blob/main/LICENSE.txt) prohibits the commercial use of outcome images. 
 - If you wish to *speed up* his process for commercial purposes, please contact him through email: iceclearwjy@gmail.com
+
+## Citation
+If our work is useful for your research, please consider citing:
+
+    @article{wang2024exploiting,
+      author = {Wang, Jianyi and Yue, Zongsheng and Zhou, Shangchen and Chan, Kelvin C.K. and Loy, Chen Change},
+      title = {Exploiting Diffusion Prior for Real-World Image Super-Resolution},
+      article = {International Journal of Computer Vision},
+      year = {2024}
+    }
 
 ## Acknowledgments
 
